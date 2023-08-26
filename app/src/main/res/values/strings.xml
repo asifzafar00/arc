@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Android Arc</string>
+    <string name="insertquotes">InsertQuotes</string>
 </resources>
