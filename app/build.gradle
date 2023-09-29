@@ -45,5 +45,9 @@ dependencies {
 
     testImplementation "org.mockito:mockito-inline:4.8.0"
 
+   /* implementation "org.koin:koin-android:3.2.0"
+    implementation 'org.koin:koin-androidx-viewmodel:3.2.0'
+    implementation 'org.koin:koin-androidx-scope:3.2.0'*/
+
 
 }
