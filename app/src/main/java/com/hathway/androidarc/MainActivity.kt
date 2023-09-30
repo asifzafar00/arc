@@ -10,10 +10,5 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var obOfClassValidatePassword = ValidatePassword()
-        var checkType = obOfClassValidatePassword.validatePassword("zxcdsasasasdws")
-        Log.e(TAG, "Vcalid Password : " + checkType)
-        println("Vcalid Password : " + checkType)
-        println("stringReversal: " + obOfClassValidatePassword.stringReversal("asifhkkh"))
     }
 }

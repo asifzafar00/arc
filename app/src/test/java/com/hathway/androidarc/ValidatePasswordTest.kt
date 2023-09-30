@@ -1,8 +1,10 @@
 package com.hathway.androidarc
 
+import junit.framework.TestCase.assertFalse
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import java.lang.invoke.MethodHandles.throwException
 
 
 internal class ValidatePasswordTest {
@@ -59,5 +61,10 @@ internal class ValidatePasswordTest {
         // string length is greater then 2
         Assert.assertEquals("asdfghjklA", objClass.stringReversal("Alkjhgfdsa"))
 
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun stringReversalTestForNull() {
+        var res = objClass.stringReversal(null)
     }
 }

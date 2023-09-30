@@ -17,7 +17,10 @@ class ValidatePassword {
 
 
     // Problem Statement : String Reversal
-    fun stringReversal(a: String): String {
+    fun stringReversal(a: String?): String {
+        if (a == null){
+            throw IllegalAccessException("Input String is Required")
+        }
         var b = ""
         if (a.isNotBlank() && a.length > 1) {
             for (i in a.length - 1 downTo 0)
