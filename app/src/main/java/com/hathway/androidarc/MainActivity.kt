@@ -1,8 +1,11 @@
 package com.hathway.androidarc
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,14 +26,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hathway.androidarc.data.Message
+import com.hathway.androidarc.viewmodel.MyViewModel
 
 class MainActivity : AppCompatActivity() {
+    class TextFieldState() {
+        var twoText: String by mutableStateOf("")
+        var passwordString: String by mutableStateOf("")
+        var usernameString: String by mutableStateOf("")
+    }
+
+    val viewModel: MyViewModel by viewModels()
+    private val sharedViewModel: MyViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MessageCard(Message(firstName = "ASIF    ", secondName = "Zafar  "))
         }
+        viewModel.flavor.observeForever { Log.e(TAG, "MessageCard: " + it) }
     }
 
     @Composable
@@ -97,9 +110,9 @@ class MainActivity : AppCompatActivity() {
                             keyboardType = KeyboardType.Number,
                             imeAction = ImeAction.Next
                         ),
-                        value =  passwordString.value,
+                        value = passwordString.value,
                         onValueChange = {
-                            passwordString.value =it
+                            passwordString.value = it
 
                         },
                         label = { Text("Password Input") },
@@ -107,10 +120,15 @@ class MainActivity : AppCompatActivity() {
                     )
                 }
                 Row(
-                    horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()
-                ) {
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+
+
+                    ) {
                     Button(
-                        onClick = { myButtonOnClick(usernameString.value,passwordString.value) },
+                        onClick = { myButtonOnClick(usernameString.value, passwordString.value) },
                         colors = ButtonDefaults.buttonColors(Color.Blue)
                     ) {
                         Text(text = "click me")
@@ -120,7 +138,8 @@ class MainActivity : AppCompatActivity() {
                 Row(
                     horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(text =valueText.value)
+                    Text(text = valueText.value)
+
 
 
                 }
@@ -129,8 +148,10 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
-    fun myButtonOnClick(username:String,password:String) {
+    private val TAG = "MainActivity"
+    fun myButtonOnClick(username: String, password: String) {
+        viewModel.setFlavor(username)
+        startActivity(Intent(this,SecondActivity::class.java))
         Toast.makeText(this, "$username -- $password", Toast.LENGTH_LONG).show()
     }
 
