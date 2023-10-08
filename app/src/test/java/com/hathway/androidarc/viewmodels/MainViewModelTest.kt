@@ -1,14 +1,15 @@
 package com.hathway.androidarc.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.hathway.androidarc.getOrAwaitValue
 import com.hathway.androidarc.repository.ProductRepository
 import com.hathway.androidarc.utils.NetworkResult
+import com.hathway.androidarc.viewmodels.MainViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import org.junit.Assert.*
 
 import org.junit.After
 import org.junit.Assert
@@ -29,7 +30,6 @@ class MainViewModelTest {
     @Mock
     lateinit var repository: ProductRepository
 
-
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
@@ -37,19 +37,30 @@ class MainViewModelTest {
     }
 
     @Test
-    fun getProducts() = runTest {
+    fun getProducts_list_empty() = runTest {
 
         Mockito.`when`(repository.getProducts()).thenReturn(NetworkResult.Success(emptyList()))
-        val obj=MainViewModel(repository)
+        val obj = MainViewModel(repository)
         obj.getProduct()
         testDispatcher.scheduler.advanceUntilIdle()
-        val result =obj.products.value!!
-        Assert.assertEquals(0,result.data!!.size)
+        val result = obj.products.getOrAwaitValue { }
+        Assert.assertEquals(0, result.data!!.size)
     }
 
     @Test
-    fun getProduct() {
+    fun getProducts_error_return() = runTest {
+
+        Mockito.`when`(repository.getProducts())
+            .thenReturn(NetworkResult.Error("Something went wrong"))
+        val obj = MainViewModel(repository)
+        obj.getProduct()
+        testDispatcher.scheduler.advanceUntilIdle()
+        val result = obj.products.getOrAwaitValue { }
+        Assert.assertEquals(true, result is NetworkResult.Error)
+        Assert.assertEquals("Something went wrong", result.massage)
     }
+
+
 
     @After
     fun tearDown() {
