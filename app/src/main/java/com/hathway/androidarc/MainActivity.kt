@@ -50,7 +50,8 @@ class MainActivity : AppCompatActivity() {
     fun MessageCard(data: Message) {
         val passwordString = remember { mutableStateOf("") }
         val usernameString = remember { mutableStateOf("") }
-        val valueText = remember { mutableStateOf("") }
+        val valueText = remember { viewModel.userName_password }
+        //  var valueText by remember { mutableStateOf(viewModel.userName_password) }
 
         Card(
             shape = RoundedCornerShape(8.dp),
@@ -124,9 +125,7 @@ class MainActivity : AppCompatActivity() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-
-
-                    ) {
+                ) {
                     Button(
                         onClick = { myButtonOnClick(usernameString.value, passwordString.value) },
                         colors = ButtonDefaults.buttonColors(Color.Blue)
@@ -138,8 +137,9 @@ class MainActivity : AppCompatActivity() {
                 Row(
                     horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(text = valueText.value)
-
+                    // Text(text = valueText)
+                    Log.e(TAG, "IND: " + valueText.value)
+                    Text(text = valueText.value ?: "")
 
 
                 }
@@ -151,8 +151,10 @@ class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
     fun myButtonOnClick(username: String, password: String) {
         viewModel.setFlavor(username)
-        startActivity(Intent(this,SecondActivity::class.java))
-        Toast.makeText(this, "$username -- $password", Toast.LENGTH_LONG).show()
+        viewModel.savedButtonData(username, password)
+        Log.e(TAG, "myButtonOnClick: " + viewModel.userName_password.value)
+        //startActivity(Intent(this,SecondActivity::class.java))
+        Toast.makeText(this, viewModel.userName_password.value, Toast.LENGTH_LONG).show()
     }
 
     @Preview

@@ -1,8 +1,12 @@
 package com.hathway.androidarc.viewmodel
 
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import perfetto.protos.UiState
 
 class MyViewModel:ViewModel() {
 
@@ -18,6 +22,9 @@ class MyViewModel:ViewModel() {
     private val _price = MutableLiveData<Double>(0.0)
     val price: LiveData<Double> = _price
 
+    private val _savedData = MutableLiveData<String>()
+    val userName_password: LiveData<String> = _savedData
+
     fun setDateF(date: String) {
         _date.value = date
     }
@@ -32,5 +39,9 @@ class MyViewModel:ViewModel() {
 
     fun setDate(pickupDate: String) {
         _date.value = pickupDate
+    }
+
+    fun savedButtonData(userName:String,password:String){
+        _savedData.value =userName + password
     }
 }
