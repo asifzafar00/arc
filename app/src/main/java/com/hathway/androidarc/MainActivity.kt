@@ -25,6 +25,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hathway.androidarc.composeUI.MessageCard
 import com.hathway.androidarc.data.Message
 import com.hathway.androidarc.viewmodel.MyViewModel
 
@@ -46,116 +47,10 @@ class MainActivity : AppCompatActivity() {
         viewModel.flavor.observeForever { Log.e(TAG, "MessageCard: " + it) }
     }
 
-    @Composable
-    fun MessageCard(data: Message) {
-        val passwordString = remember { mutableStateOf("") }
-        val usernameString = remember { mutableStateOf("") }
-        val valueText = remember { viewModel.userName_password }
-        //  var valueText by remember { mutableStateOf(viewModel.userName_password) }
 
-        Card(
-            shape = RoundedCornerShape(8.dp),
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth()
-        ) {
-            Column(
-                modifier = Modifier
-                    .height(350.dp)
-                    .padding(16.dp)
-
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(
-                        text = "Activity One",
-                        style = MaterialTheme.typography.h4,
-                    )
-                }
-                Row(
-                    horizontalArrangement = Arrangement.Start, modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(
-                        text = "Name",
-                        fontSize = 18.sp
-                    )
-                }
-                Row(
-                    horizontalArrangement = Arrangement.Start, modifier = Modifier.fillMaxWidth()
-                ) {
-
-                    OutlinedTextField(
-                        value = usernameString.value,
-                        onValueChange = { usernameString.value = it },
-                        label = { Text("Name Input") }
-                    )
-                }
-
-                Row(
-                    horizontalArrangement = Arrangement.Start, modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(
-                        text = "Password",
-                        fontSize = 18.sp
-                    )
-                }
-                Row(
-                    horizontalArrangement = Arrangement.Start, modifier = Modifier.fillMaxWidth()
-                ) {
-
-                    OutlinedTextField(
-                        keyboardOptions = KeyboardOptions(
-                            capitalization = KeyboardCapitalization.None,
-                            autoCorrect = true,
-                            keyboardType = KeyboardType.Number,
-                            imeAction = ImeAction.Next
-                        ),
-                        value = passwordString.value,
-                        onValueChange = {
-                            passwordString.value = it
-
-                        },
-                        label = { Text("Password Input") },
-                        placeholder = { Text(text = "Your Placeholder/Hint") }
-                    )
-                }
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                ) {
-                    Button(
-                        onClick = { myButtonOnClick(usernameString.value, passwordString.value) },
-                        colors = ButtonDefaults.buttonColors(Color.Blue)
-                    ) {
-                        Text(text = "click me")
-                    }
-
-                }
-                Row(
-                    horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()
-                ) {
-                    // Text(text = valueText)
-                    Log.e(TAG, "IND: " + valueText.value)
-                    Text(text = valueText.value ?: "")
-
-
-                }
-            }
-        }
-
-    }
 
     private val TAG = "MainActivity"
-    fun myButtonOnClick(username: String, password: String) {
-        viewModel.setFlavor(username)
-        viewModel.savedButtonData(username, password)
-        Log.e(TAG, "myButtonOnClick: " + viewModel.userName_password.value)
-        //startActivity(Intent(this,SecondActivity::class.java))
-        Toast.makeText(this, viewModel.userName_password.value, Toast.LENGTH_LONG).show()
-    }
+   
 
     @Preview
     @Composable

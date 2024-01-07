@@ -1,11 +1,13 @@
 package com.hathway.androidarc.viewmodel
 
+import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.hathway.androidarc.composeUI.viewModel
 import perfetto.protos.UiState
 
 class MyViewModel:ViewModel() {
@@ -44,4 +46,14 @@ class MyViewModel:ViewModel() {
     fun savedButtonData(userName:String,password:String){
         _savedData.value =userName + password
     }
+    private  val TAG = "MyViewModel"
+    fun myButtonOnClick(username: String, password: String) {
+        viewModel.setFlavor(username)
+        viewModel.savedButtonData(username, password)
+        Log.e(TAG, "myButtonOnClick: " + viewModel.userName_password.value)
+        //startActivity(Intent(this,SecondActivity::class.java))
+
+    }
+
+
 }
